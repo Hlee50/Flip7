@@ -79,12 +79,12 @@ startBtn.onclick = () => {
 
 let playerNum;
 
-for (let i = 0; i < 6; i ++){
+for (let i = 0; i < 7; i ++){
     const playerNumBtn = document.createElement("button");
     playerNumBtn.classList.add("player-number");
-    playerNumBtn.textContent = i + 3;
+    playerNumBtn.textContent = i + 2;
     playerNumBtn.onclick = async () => {
-        playerNum = i + 3;
+        playerNum = i + 2;
         playerScreen.classList.remove("screen-fadein");
         setTimeout(() => {
             namesScreen.classList.add("screen-fadein");

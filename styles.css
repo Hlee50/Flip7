@@ -278,12 +278,20 @@ button:hover {
     font-size: 40px;
     transform-style: preserve-3d;
     box-shadow : none;
-    transition: transform 0.75s;
+    transition: transform 0.5s;
 }
 
 #flip:hover {
-  transform: rotate3d(1, 1, 0, 360deg);
-  box-shadow : none;
+  transform: rotate3d(1, 1, 0, 45deg);
+  transition: transform 0.25s;
+}
+
+#flip.flipped {
+  transform: rotate3d(0, 1, 0, 180deg);
+}
+
+#flip.flipped:hover {
+    /* Ovveride */
 }
 
 #stay{
@@ -293,13 +301,17 @@ button:hover {
     border-radius: 50%;
     box-shadow : none;
     transform: scale(1);
-    transition: transform 0.25s
+    transition: transform 0.25s;
 }
 
 #stay:hover {
     background: dodgerblue;
     box-shadow : none;
     transform: scale(1.10);
+}
+
+#stay.stayed {
+    transform: scale(0.9);
 }
 
 .rainbow-text {

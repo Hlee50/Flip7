@@ -184,6 +184,9 @@ export class flip7game{
                 const waitForFlip = (currentPlayer) => {
                     return new Promise((resolve) => {
                         this.flipbtn.onclick = async () => {
+                            this.flipbtn.classList.toggle("flipped");
+                            await this.delay(500);
+                            this.flipbtn.classList.toggle("flipped");
                             if (!currentPlayer.status) return;
                             this.flipbtn.disabled = true;
                             this.staybtn.disabled = true;
@@ -196,6 +199,9 @@ export class flip7game{
                 const waitForStay = (currentPlayer) => {
                     return new Promise((resolve) => {
                         this.staybtn.onclick = async () => {
+                            this.staybtn.classList.toggle("stayed");
+                            await this.delay(250);
+                            this.staybtn.classList.toggle("stayed");
                             if (!currentPlayer.status) return;
                             this.staybtn.disabled = true;
                             this.flipbtn.disabled = true;
@@ -203,7 +209,7 @@ export class flip7game{
                                 + `<span style="color: white; font-size: 40px;"> stayed!</span>`;
                             this.showGameMessage();
                             await this.delay(500);
-                            this.deck.discardCards(currentPlayer.discardHand());                      
+                            this.deck.discardCards(currentPlayer.discardHand());                   
                             await currentPlayer.stay();
                             resolve(currentPlayer.name + " stays");
                         };
