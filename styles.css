@@ -1,0 +1,369 @@
+@import url("https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap");
+body {
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom right, cyan, blue);
+    font-family: 'Mouse Memoirs','Trebuchet MS';
+    font-size: 20px;
+    height: 100vh;
+    margin: 0;
+}
+
+.perspective {
+  perspective: 1000px;
+}
+
+#title {
+  color: yellow;
+  font-size: 250px;
+  text-shadow: 5px 5px red;
+  margin: 0;
+  display: inline-block;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
+
+#title:hover {
+  transform: rotateY(360deg);
+}
+
+#start-screen {
+    background: linear-gradient(to bottom right, cyan, blue, violet);
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 1;
+    z-index: 4;
+    transition: opacity 0.5s ease;
+}
+
+ #player-screen {
+    background: linear-gradient(to bottom right, cyan, blue, violet);
+    display: flex;
+    position: absolute;
+    top: 0; 
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0;
+    z-index: 3;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+#names-screen {
+    background: linear-gradient(to bottom right, cyan, blue, violet);
+    display: flex;
+    position: absolute;
+    top: 0; 
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0;
+    z-index: 2;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+#player-screen.screen-fadein, #names-screen.screen-fadein{
+    opacity: 1;
+    pointer-events: all;
+}
+
+#start-screen.screen-fadeout {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#player-number-row {
+    flex-direction: row;     
+    justify-content: center;
+    align-items: center;   
+}
+
+.player-number {
+    font-family: 'Mouse Memoirs';
+    font-size: 75px;
+    text-shadow: 3px 3px red;
+    padding: 0px 40px;
+    border-radius: 20px;
+    margin: 20px;
+}
+
+#name-input {
+    background: rgb(255,255,255,0.25);
+    width: 500px;
+    height: 100px;
+    border: none;
+    font-family: 'Mouse Memoirs';  
+    font-size: 75px;
+    color: white;
+    text-align: center;
+    caret-color: transparent;
+    padding: 10px;
+    border-radius: 20px;    
+    margin-top: 10px;
+}
+
+#name-input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+#game-board {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+#game-message {
+    min-height: 60px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+#game-message.start-message {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+#game-message.fade {
+    opacity: 1;
+}
+
+.grid-container {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 5px;                            
+    width: 90%;
+    max-width: 2000px;
+    height: auto;
+}
+
+.player-grid {
+    background-color: rgba(255,255,255,0);
+    box-shadow: none;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    transition: transform 0.5s ease, background-color 0.5s ease, opacity 0.5s ease, box-shadow 0.25s ease;
+}
+
+.player-grid .hand {
+    color: yellow; 
+    font-size: 35px;
+    text-shadow: 1.5px 1.5px red;
+    transition: opacity 0.5s ease;
+    z-index: 1;
+}
+
+.player-grid .score {
+    position: absolute;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    font-size: 40px;
+    transition: opacity 0.5s ease;
+    z-index: 2;
+}
+
+.player-grid:hover .hand {
+    opacity: 0;
+}
+
+.player-grid:hover .score {
+    opacity: 1;
+}
+
+.player-grid.start {
+    transform: scale(0.5);
+    opacity: 0;
+}
+
+.player-grid.fade {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.player-grid.current-grid {
+    box-shadow: 0 0 30px 5px lawngreen;
+    border: 3px solid limegreen;
+    transition: box-shadow 0.25s, border 0.25s;
+    z-index: 1;
+}
+
+.player-grid.out-grid {
+    opacity: 0.25;
+    transition: opacity 0.5s ease, box-shadow 0.25s ease;
+    z-index: 1;
+}
+
+.player-grid.frozen-grid {
+    background-color: rgb(0,255,255,0.5);
+    opacity: 0.25;
+    transition: background-color 0.5s ease, opacity 0.5s ease;
+    z-index: 1;
+}
+
+.player-grid.flip3-grid {
+    box-shadow: 0 0 30px 5px orange;
+    border: 3px solid darkorange;
+    transition: box-shadow 0.25s, border 0.25s;
+    z-index: 2;
+}
+
+.player-grid.bust-grid {
+    box-shadow: 0 0 30px 5px red;
+    border: 3px solid red;
+    transition: box-shadow 0.25s, border 0.25s;
+    z-index: 3;
+}
+
+.player-grid.second-chance-grid {
+    box-shadow: 0 0 30px 5px pink;
+    border: 3px solid pink;
+    transition: box-shadow 0.25s, border 0.25s;
+    z-index: 3;
+}
+
+button{
+    font-family: 'Mouse Memoirs';
+    background-color: darkturquoise;
+    border: none;
+    color: gold;
+    text-shadow: 1.5px 1.5px red;
+    box-shadow: 3px 3px red;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+button:hover {
+    background: dodgerblue;
+    border: none;
+    box-shadow: 3px 3px darkred;
+}
+
+#flip{
+    padding: 30px 20px;
+    font-size: 40px;
+    transform-style: preserve-3d;
+    box-shadow : none;
+    transition: transform 0.75s;
+}
+
+#flip:hover {
+  transform: rotate3d(1, 1, 0, 360deg);
+  box-shadow : none;
+}
+
+#stay{
+    padding: 0px 30px;
+    background: darkturquoise;
+    font-size: 40px;
+    border-radius: 50%;
+    box-shadow : none;
+    transform: scale(1);
+    transition: transform 0.25s
+}
+
+#stay:hover {
+    background: dodgerblue;
+    box-shadow : none;
+    transform: scale(1.10);
+}
+
+.rainbow-text {
+    color: white;
+    text-shadow:
+        1px 1px 3px red,
+        1.5px 1.5px 3px orange,
+        2px 2px 4px yellow,
+        2.5px 2.5px 4px green,
+        3px 3px 5px blue,
+        3.5px 3.5px 5px indigo,
+        4px 4px 5px violet;
+}
+
+#popup-overlay {
+    position: fixed;     
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    pointer-events: none;
+    justify-content: center; 
+    align-items: center;
+    opacity: 0;
+    z-index: 10;
+    transition: opacity 0.5s;
+}
+
+#popup {
+    background: linear-gradient(to bottom right, cyan, blue);
+    padding: 20px;
+    border-radius: 10px;
+    min-width: 200px;
+    text-align: center;
+    transform: scale(0.7);
+    opacity: 0;
+    z-index: 11;
+    transition: transform 0.3s, opacity 0.5s;
+}
+
+.popup-button {
+    font-family: 'Mouse Memoirs';
+    font-size: 30px;
+    text-shadow: 1px 1px red;
+    box-shadow: none;
+    padding: 5px 5px;
+    border-radius: 20px;
+    margin: 5px;
+}
+
+.popup-button:hover {
+    box-shadow: none;
+}
+
+#popup-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#popup-overlay.active #popup {
+    transform: scale(1);
+    opacity: 1;
+}
+
+#popup-overlay.active #popup .popup-button {
+    transform: scale(1);
+    opacity: 1;
+}

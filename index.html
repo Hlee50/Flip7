@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="start-screen">
+        <div class="perspective">
+            <h1 id="title">FLIP7</h1>
+        </div>
+        <h2 style="color: white; text-shadow: 1.5px 1.5px black">(A digital version of the popular card game by Eric Olsen!)</h2>
+        <button id="start" style="padding: 10px 50px; font-family: 'Mouse Memoirs'; font-size: 50px; cursor: pointer;">
+            Start Game
+        </button>
+    </div>
+
+    <div id="player-screen">
+        <h1 style="color: yellow; font-size: 75px; text-shadow: 3px 3px red;">How many players will be playing?</h1>
+        <div id="player-number-row"></div>
+    </div>
+
+    <div id="names-screen">
+        <div id="player-prompt" style="color: yellow; font-size: 75px; text-shadow: 3px 3px red;"></div>
+        <form id="player-form">
+            <input type="text" id="name-input" name="name"><br>
+        </form> 
+    </div>    
+
+    <div id="popup-overlay">
+        <div id="popup"></div>
+    </div>
+
+    <div id="game-board">
+        <h1 style="color: yellow; font-size: 30px; text-shadow: 2px 2px red;"><em>200 to WIN!</em></h1>
+
+        <div class="grid-container" id="grid-container"></div>
+
+        <h2 id="game-message"></h2>
+
+        <div style="display: flex; justify-content: center; gap: 250px; margin-bottom: 20px">
+            <button id="flip">
+                <em>Flip</em>
+            </button>
+            <button id="stay">
+                <em>Stay</em>
+            </button>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+
+</body>
+</html>
