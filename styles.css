@@ -230,7 +230,7 @@ body {
 .player-grid.frozen-grid {
     background-color: rgb(0,255,255,0.5);
     opacity: 0.25;
-    transition: background-color 0.5s ease, opacity 0.5s ease;
+    transition: background-color 0.5s ease, opacity 0.5s ease, box-shadow 0.25s ease;
     z-index: 1;
 }
 
