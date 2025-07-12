@@ -24,4 +24,4 @@ Action cards are represented as follows in-game:
 
 :snowflake: - Freeze
 
-<span style="color: darkorange;">F3</span> - Flip Three
+F3 - Flip Three
