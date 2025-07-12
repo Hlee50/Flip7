@@ -1,0 +1,50 @@
+.card{
+    width: 30px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: floralwhite;
+    color: gray;
+    text-shadow: none;
+    font-size: 25px;
+    border-radius: 5px;
+    transform-style: preserve-3d;
+    opacity: 0;
+    user-select: none;
+    transform: translateX(25px);
+    transition: opacity 0.25s ease, transform 0.25s;
+}
+
+.card.drawn{
+    opacity: 1;
+    transform: translateX(0px);
+}
+
+.modifier{
+    background-color: gold;
+    color: red;
+
+}
+
+.second-chance{
+    background-color: red;
+    color: pink;
+}
+
+.flip-back.second-chance {
+    background-color: red;
+    color: pink;
+    font-size: 65px;
+}
+
+.freeze{
+    background-color: aqua;
+    color:dodgerblue;
+    font-weight: bold;
+}
+
+.flip3{
+    background-color: yellow;
+    color: darkorange;
+}

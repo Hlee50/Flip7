@@ -1,5 +1,15 @@
-import {flip7deck} from "./flip7deck.js"
+import {actionsDict, flip7deck} from "./flip7deck.js"
 import {flip7player} from "./flip7player.js"
+import { newGame } from "./main.js";
+
+const messageDict = {
+    "Second Chance": '<span style="color: pink; font-size: 50px; text-shadow: 1.5px 1.5px red;">SECOND CHANCE</span>',
+    "Freeze": '<span style="color: dodgerblue; font-size: 50px; text-shadow: 1.5px 1.5px aqua;">FREEZE</span>',
+    "Frozen": '<span style="color: dodgerblue; font-size: 50px; text-shadow: 1.5px 1.5px aqua;">FROZEN</span>',
+    "Flip Three": '<span style="color: darkorange; font-size: 50px; text-shadow: 1.5px 1.5px yellow;">FLIP 3</span>',
+    "Flips Three": '<span style="color: darkorange; font-size: 50px; text-shadow: 1.5px 1.5px yellow;">FLIPS 3</span>',
+    "Flip 7": '<span class="rainbow-text">FLIP7</span>'
+};
 
 export class flip7game{
     constructor(playerNames){
@@ -13,14 +23,22 @@ export class flip7game{
         this.deck = new flip7deck();
         this.deck.shuffle();
         this.flip7 = false;
-        this.flipbtn = document.getElementById("flip");
-        this.staybtn = document.getElementById("stay");
+        this.flipBtn = document.getElementById("flip");
+        this.flipBtnCard = document.getElementById("flip-card");
+        this.stayBtn = document.getElementById("stay");
         this.message = "";
         this.gameMessage = document.getElementById("game-message");
     }
 
     delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Returns whether there is a tie in the highest score
+    gameWon() {
+        const totalScores = this.players.map(player => player.totalScore);
+        const highScore = Math.max(...totalScores);
+        return totalScores.filter(s => s == highScore).length > 1;
     }
 
     showGameMessage(isStart = false) {
@@ -39,20 +57,54 @@ export class flip7game{
         }, fadeDelay);
     }
 
+    cardDisplay(card) {
+        this.flipBtnCard.className = "flip-back";
+        if (typeof card === "string") {
+            if (card.startsWith('+') || card.startsWith('x')){
+                this.flipBtnCard.className = "flip-back modifier";
+                this.flipBtnCard.innerHTML = card;
+            } else if (card === "Second Chance" || card === "Freeze" || card === "Flip Three"){
+                const { className, innerHTML } = actionsDict[card];
+                this.flipBtnCard.className = `flip-back ${className}`;
+                this.flipBtnCard.innerHTML  = innerHTML;
+            }
+        } else {
+            this.flipBtnCard.innerHTML = card;
+        }
+    }
+
+    cardMessage(card) {
+        var cardMessage = "";
+        if (typeof card === "string") {
+            if (card.startsWith('+') || card.startsWith('x')){
+                cardMessage = `<span style="color: red; font-size: 50px;">${card}</span>`;
+            } else if (card === "Second Chance" || card === "Freeze" || card === "Flip Three"){
+                cardMessage = messageDict[card];
+            }
+        } else {
+            cardMessage = `<span style="font-size: 50px;">${card}</span>`;
+        }
+        return cardMessage;
+    }
+
     async flip(player, flip3 = false, flip3Queue = []){
         if (this.deck.deck.length == 0) {
             this.deck.shuffle();
         }
         const card = this.deck.deal();
         console.log(card);
+        this.flipBtn.classList.toggle("flipped");
+        this.cardDisplay(card);
+        await this.delay(500);
         this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${player.name}</span>`
-            +`<span style="color: white; font-size: 40px;"> flipped ${card}!</span>`;
+            + ' flipped ' + this.cardMessage(card) + '!';
         this.showGameMessage();
+        this.flipBtn.classList.toggle("flipped");
         if (typeof card === "string") {
             if (card.startsWith('+') || card.startsWith('x')){
                 player.drawModifier(card);
             } else if (card === "Second Chance"){
-                if (player.actionCards.includes(card)){
+                if (player.actions.includes(card)){
                     await this.playAction(player,card);
                 } else {
                     player.drawAction(card);
@@ -66,19 +118,18 @@ export class flip7game{
                 }
             }
         } else {
-            if (player.hand.includes(card)){
+            if (player.numbers.includes(card)){
                 this.deck.discardCard(card);
-                if (player.actionCards.includes("Second Chance")){
+                if (player.actions.includes("Second Chance")){
                     player.grid.classList.add('second-chance-grid');
                     await this.delay(250);
                     player.grid.classList.remove('second-chance-grid');
-                    await this.delay(250);
                     this.deck.discardCard("Second Chance");
                     player.discardAction("Second Chance");
-                    await this.delay(500);
+                    await this.delay(750);
                     this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${player.name}</span>`
-                        + '<span style="color: white; font-size: 40px;"> flipped a duplicate but used '
-                        + '<span style="color: pink; font-size: 50px; text-shadow: 1.5px 1.5px red;">SECOND CHANCE</span>!</span>';
+                        + ' flipped a duplicate but used '
+                        + messageDict["Second Chance"] + '!';
                     this.showGameMessage();
                     await this.delay(500);
                 } else {
@@ -86,24 +137,20 @@ export class flip7game{
                     player.grid.classList.add('bust-grid');
                     await this.delay(250);
                     player.grid.classList.remove('bust-grid');
-                    await this.delay(250);
                     this.deck.discardCards(player.discardHand());
                     player.bust();
-                    await this.delay(500);
+                    await this.delay(750);
                     this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${player.name}</span>`
-                        + `<span style="color: white; font-size: 40px;"> flipped a duplicate and BUSTED!</span>`;
+                        + ' flipped a duplicate and BUSTED!';
                     this.showGameMessage();
                     await this.delay(1000);
                 }
             } else {
                 player.drawNumber(card);
-                if (player.hand.length === 7){
-                    player.display();
+                if (player.numbers.length === 7){
                     await this.delay(1000);
                     this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${player.name}</span>`
-                        + '<span style="color: white; font-size: 40px;"> got a' 
-                        + '<span class="rainbow-text" style ="font-size: 50px;"> FLIP7</span>' 
-                        + '! (+15 bonus points!)</span>';
+                        + ' got a ' + messageDict["Flip 7"] + '! (+15 bonus points!)</span>';
                     this.showGameMessage();
                     this.flip7 = true;
                     await this.delay(1000);
@@ -117,15 +164,14 @@ export class flip7game{
 
     async playAction(player, card){
         if (card === "Second Chance"){
-            if (this.players.filter(p => p.status).every(p => p.actionCards.includes("Second Chance"))){
+            if (this.players.filter(p => p.status).every(p => p.actions.includes("Second Chance"))){
                 this.deck.discardCard(card);
             } else {
                 const selectedPlayer = await this.selectPlayer(player, card);
                 const secondChancePlayer = this.players.find(p => p.name === selectedPlayer);
                 secondChancePlayer.drawAction(card);
-                this.message = '<span style="color: white; font-size: 40px;">'
-                    + `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${selectedPlayer}</span><span style="color: white; font-size: 40px;">`
-                    + ' is given <span style="color: pink; font-size: 50px; text-shadow: 1.5px 1.5px red;">SECOND CHANCE</span>!</span>';
+                this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${selectedPlayer}</span>`
+                    + ' is given ' + messageDict["Second Chance"] + '!';
                 this.showGameMessage();
                 await this.delay(1000);
             }
@@ -136,9 +182,8 @@ export class flip7game{
             const frozenPlayer = this.players.find(p => p.name === selectedPlayer);
             this.deck.discardCards(frozenPlayer.discardHand());
             frozenPlayer.freeze();
-            this.message = '<span style="color: white; font-size: 40px;">'
-                + `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${selectedPlayer}</span><span style="color: white; font-size: 40px;">`
-                + ' is <span style="color: dodgerblue; font-size: 50px; text-shadow: 1.5px 1.5px aqua;">FROZEN</span>!</span>';
+            this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${selectedPlayer}</span>`
+                + ' is ' + messageDict["Frozen"] + '!';
             this.showGameMessage();
             await this.delay(1000);
         }else if (card === "Flip Three"){
@@ -147,10 +192,11 @@ export class flip7game{
             player.discardAction(card);
             const flip3Player = this.players.find(p => p.name === selectedPlayer);
             this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${flip3Player.name}</span> `
-                + '<span style="color: darkorange; font-size: 50px; text-shadow: 1.5px 1.5px yellow;"> FLIPS 3</span><span style="color: white; font-size: 40px;">!</span>';
+                + messageDict["Flips Three"] + '!';
             this.showGameMessage();
             flip3Player.grid.classList.add("flip3-grid");
 
+            // Adds action cards drawn during a Flip 3 to a queue so they can be resolved in the order they are drawn after the Flip 3 finishes
             const flip3Queue = [];
             for (let i = 0; i < 3; i ++){
                 if (flip3Player.status){
@@ -168,6 +214,7 @@ export class flip7game{
         }
     }
 
+    // Creates a popup and button options for each active and eligible player to select for action card actions
     selectPlayer(player, action){
         return new Promise(resolve => {
             const overlay = document.getElementById("popup-overlay");
@@ -176,7 +223,7 @@ export class flip7game{
             if (action === "Second Chance"){
                 popup.innerHTML = `<span style ="color: yellow; font-size: 30px; text-shadow: 1px 1px red;">${player.name}</span><br><span style="color: white; font-size: 30px;">Select a player to give ${action} to</span><br>`;
                 this.players.forEach(p => {
-                if (p.status && !p.actionCards.includes("Second Chance")){
+                if (p.status && !p.actions.includes("Second Chance")){
                     const playerBtn = document.createElement("button");
                     playerBtn.classList.add("popup-button");
                     playerBtn.textContent = p.name;
@@ -208,6 +255,47 @@ export class flip7game{
     }
 
     async startRound(){
+        const waitForFlip = (currentPlayer) => {
+            return new Promise((resolve) => {
+                this.flipBtn.onclick = async () => {
+                    this.flipBtn.disabled = true;
+                    this.stayBtn.disabled = true;
+                    document.removeEventListener('keydown', waitForKey);
+                    await this.flip(currentPlayer);
+                    resolve();
+                };
+            });
+        };
+
+        const waitForStay = (currentPlayer) => {
+            return new Promise((resolve) => {
+                this.stayBtn.onclick = async () => {
+                    this.stayBtn.disabled = true;
+                    this.flipBtn.disabled = true;
+                    document.removeEventListener('keydown', waitForKey);
+                    this.stayBtn.classList.toggle("stayed");
+                    await this.delay(250);
+                    this.stayBtn.classList.toggle("stayed");
+                    this.deck.discardCards(currentPlayer.discardHand());
+                    currentPlayer.stay();
+                    this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${currentPlayer.name}</span>`
+                        + ' stayed!';
+                    this.showGameMessage();
+                    await this.delay(500);
+                    resolve();
+                };
+            });
+        };
+
+        // Listens and activates buttons through right or left arrow keys
+        const waitForKey = (e) => {
+            if (e.keyCode === 37) {
+                this.flipBtn.click();
+            } else if (e.keyCode === 39) {
+                this.stayBtn.click();  
+            }
+        };
+        
         while (this.players.some(player => player.status === true)) {
             for(let i = 0; i < this.players.length; i++) {
                 const currentPlayer = this.players[i];
@@ -220,43 +308,13 @@ export class flip7game{
 
                 currentPlayer.grid.classList.add("current-grid");
 
-                const waitForFlip = (currentPlayer) => {
-                    return new Promise((resolve) => {
-                        this.flipbtn.onclick = async () => {
-                            this.flipbtn.classList.toggle("flipped");
-                            await this.delay(500);
-                            this.flipbtn.classList.toggle("flipped");
-                            if (!currentPlayer.status) return;
-                            this.flipbtn.disabled = true;
-                            this.staybtn.disabled = true;
-                            await this.flip(currentPlayer);
-                            resolve(currentPlayer.name + " flips");
-                        };
-                    });
-                };
-
-                const waitForStay = (currentPlayer) => {
-                    return new Promise((resolve) => {
-                        this.staybtn.onclick = async () => {
-                            this.staybtn.classList.toggle("stayed");
-                            await this.delay(250);
-                            this.staybtn.classList.toggle("stayed");
-                            if (!currentPlayer.status) return;
-                            this.staybtn.disabled = true;
-                            this.flipbtn.disabled = true;
-                            this.deck.discardCards(currentPlayer.discardHand());
-                            currentPlayer.stay();
-                            this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${currentPlayer.name}</span>`
-                                + `<span style="color: white; font-size: 40px;"> stayed!</span>`;
-                            this.showGameMessage();
-                            await this.delay(500);
-                            resolve(currentPlayer.name + " stays");
-                        };
-                    });
-                };
-
-                this.flipbtn.disabled = false;
-                this.staybtn.disabled = false;
+                this.flipBtn.disabled = false;
+                if ([...currentPlayer.numbers,...currentPlayer.modifiers,...currentPlayer.actions].length === 0) {
+                    this.stayBtn.disabled = true;
+                } else {
+                    this.stayBtn.disabled = false;
+                }
+                document.addEventListener('keydown', waitForKey);
                 
                 await Promise.race([
                     waitForFlip(currentPlayer),
@@ -264,28 +322,46 @@ export class flip7game{
                 ]);
 
                 currentPlayer.sumRoundScore();
-                currentPlayer.display();
                 currentPlayer.grid.classList.remove("current-grid");
             }
         }
     }
 
     async startGame(){
+        document.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab') {
+                    e.preventDefault();
+                    this.players.forEach(player => {
+                        player.scoreDisplay.classList.add("show");
+                        player.grid.querySelector(".player-display").classList.add("hide");
+                    });
+                }
+            });
+
+        document.addEventListener('keyup', (e) => {
+                if (e.key === 'Tab') {
+                    this.players.forEach(player => {
+                        player.scoreDisplay.classList.remove("show");
+                        player.grid.querySelector(".player-display").classList.remove("hide");   
+                    });
+                }
+            });
+
         this.message = '<span style="color: white; font-size: 50px;">GAME START!</span>';
         this.showGameMessage(true);
         await this.delay(1000);
-        while (this.players.every(player => player.totalScore < 200) || new Set(this.players.map(player => player.totalScore)).size !== this.players.length){
+        while (this.players.every(player => player.totalScore < 200) || this.gameWon()){
             await this.delay(1000);
             this.message = '<span style="color: white; font-size: 50px;">NEW ROUND</span>';
             this.showGameMessage();
             this.players.forEach(player => {
                 player.grid.classList.remove("out-grid", "frozen-grid");
             });
-            this.flipbtn.disabled = false;
-            this.staybtn.disabled = false;
+            this.flipBtn.disabled = false;
+            this.stayBtn.disabled = false;
             await this.startRound();
-            this.flipbtn.disabled = true;
-            this.staybtn.disabled = true;
+            this.flipBtn.disabled = true;
+            this.stayBtn.disabled = true;
             await this.delay(1000);
             this.message = '<span style="color: white; font-size: 50px;">ROUND END</span>';
             this.showGameMessage();
@@ -301,8 +377,21 @@ export class flip7game{
         );
         const overlay = document.getElementById("popup-overlay");
         const popup = document.getElementById("popup");
-        popup.innerHTML = `<span style="color: yellow; font-size: 75px; text-shadow: 2px 2px red;">${winner.name}</span>`
-            + `<span style="color: white; font-size: 50px;"> won with ${winner.totalScore} points!</span>`;
+        const newGameBtn = document.createElement("button");
+        newGameBtn.classList.add("popup-button");
+        newGameBtn.textContent = "New Game";
+        newGameBtn.style.fontSize = "50px";
+        newGameBtn.style.padding = "0px 25px";
+        newGameBtn.onclick = () => {
+            overlay.classList.remove("active");
+            newGame();
+                setTimeout(() => {
+                    document.getElementById("player-screen").classList.add("screen-fadein");
+                }, 500);
+        };
+        popup.innerHTML = `<span style="color: yellow; font-size: 60px; text-shadow: 2px 2px red;">${winner.name}</span>`
+            + `<span style="color: white; font-size: 50px;"> won with ${winner.totalScore} points!</span><br><br>`;
+        popup.appendChild(newGameBtn);
         overlay.classList.add('active');
     }
 }

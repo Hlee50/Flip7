@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="cards.css">
 </head>
 <body>
     <div id="start-screen">
@@ -33,15 +34,14 @@
     </div>
 
     <div id="game-board">
-        <h1 style="color: yellow; font-size: 30px; text-shadow: 2px 2px red;"><em>200 to WIN!</em></h1>
-
         <div class="grid-container" id="grid-container"></div>
 
         <h2 id="game-message"></h2>
 
         <div style="display: flex; justify-content: center; gap: 250px; margin-bottom: 20px">
             <button id="flip">
-                <em>Flip</em>
+                <div class="flip-front"><em>Flip</em></div>
+                <div id="flip-card" class="flip-back"></div>
             </button>
             <button id="stay">
                 <em>Stay</em>
