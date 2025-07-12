@@ -19,5 +19,7 @@ Press tab to view scores for all players, or hover over one player to view that 
 
 Action cards are represented as follows in-game:
 :heart: - Second Chance
+
 :snowflake: - Freeze
+
 <span style="color: darkorange;">F3</span> - Flip Three
