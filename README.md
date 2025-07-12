@@ -7,7 +7,7 @@ Similar to the physical card game, this digital version is local multiplayer onl
 [Flip 7 Rules](https://cdn.shopify.com/s/files/1/0611/3958/3198/files/25_FLIP_7_TB_RULES_C_ND_1.pdf?v=1734983801)
 
 
-## Playing/Running the game:
+## Running/Playing the game:
 https://hlee50.github.io/Flip7/
 
 Select the number of players and enter each player's name.
