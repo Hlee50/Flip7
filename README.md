@@ -18,6 +18,7 @@ During each player's turn (hightlighted in green):
 Press tab to view scores for all players, or hover over one player to view that player's score.
 
 Action cards are represented as follows in-game:
+
 :heart: - Second Chance
 
 :snowflake: - Freeze
