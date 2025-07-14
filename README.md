@@ -8,9 +8,7 @@ Similar to the physical card game, this digital version is local multiplayer onl
 
 
 ## Running/Playing the game:
-[Main App Link](https://hlee50.github.io/flip7/)
-
-[Alternate Link](https://flip7-seven.vercel.app)
+https://hlee50.github.io/flip7/ 
 
 Select the number of players and enter each player's name.
 
