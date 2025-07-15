@@ -90,6 +90,9 @@ export class flip7game{
     async flip(player, flip3 = false, flip3Queue = []){
         if (this.deck.deck.length == 0) {
             this.deck.shuffle();
+            this.message = 'Deck shuffled!';
+            this.showGameMessage();
+            await this.delay(500);
         }
         const card = this.deck.deal();
         console.log(card);
