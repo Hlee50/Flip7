@@ -3,11 +3,11 @@ import {flip7player} from "./flip7player.js"
 import { newGame } from "./main.js";
 
 const messageDict = {
-    "Second Chance": '<span style="color: pink; font-size: 50px; text-shadow: 1.5px 1.5px red;">SECOND CHANCE</span>',
-    "Freeze": '<span style="color: dodgerblue; font-size: 50px; text-shadow: 1.5px 1.5px aqua;">FREEZE</span>',
-    "Frozen": '<span style="color: dodgerblue; font-size: 50px; text-shadow: 1.5px 1.5px aqua;">FROZEN</span>',
-    "Flip Three": '<span style="color: darkorange; font-size: 50px; text-shadow: 1.5px 1.5px yellow;">FLIP 3</span>',
-    "Flips Three": '<span style="color: darkorange; font-size: 50px; text-shadow: 1.5px 1.5px yellow;">FLIPS 3</span>',
+    "Second Chance": '<span style="color: pink; font-size: 50px; text-shadow: 2px 2px red;">SECOND CHANCE</span>',
+    "Freeze": '<span style="color: dodgerblue; font-size: 50px; text-shadow: 2px 2px aqua;">FREEZE</span>',
+    "Frozen": '<span style="color: dodgerblue; font-size: 50px; text-shadow: 2px 2px aqua;">FROZEN</span>',
+    "Flip Three": '<span style="color: darkorange; font-size: 50px; text-shadow: 2px 2px yellow;">FLIP 3</span>',
+    "Flips Three": '<span style="color: darkorange; font-size: 50px; text-shadow: 2px 2px yellow;">FLIPS 3</span>',
     "Flip 7": '<span class="rainbow-text">FLIP7</span>'
 };
 
@@ -99,7 +99,7 @@ export class flip7game{
         this.flipBtn.classList.toggle("flipped");
         this.cardDisplay(card);
         await this.delay(500);
-        this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${player.name}</span>`
+        this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 2px 2px red;">${player.name}</span>`
             + ' flipped ' + this.cardMessage(card) + '!';
         this.showGameMessage();
         this.flipBtn.classList.toggle("flipped");
@@ -130,7 +130,7 @@ export class flip7game{
                     this.deck.discardCard("Second Chance");
                     player.discardAction("Second Chance");
                     await this.delay(750);
-                    this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${player.name}</span>`
+                    this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 2px 2px red;">${player.name}</span>`
                         + ' flipped a duplicate but used '
                         + messageDict["Second Chance"] + '!';
                     this.showGameMessage();
@@ -143,7 +143,7 @@ export class flip7game{
                     this.deck.discardCards(player.discardHand());
                     player.bust();
                     await this.delay(750);
-                    this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${player.name}</span>`
+                    this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 2px 2px red;">${player.name}</span>`
                         + ' flipped a duplicate and BUSTED!';
                     this.showGameMessage();
                     await this.delay(1000);
@@ -152,7 +152,7 @@ export class flip7game{
                 player.drawNumber(card);
                 if (player.numbers.length === 7){
                     await this.delay(1000);
-                    this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${player.name}</span>`
+                    this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 2px 2px red;">${player.name}</span>`
                         + ' got a ' + messageDict["Flip 7"] + '! (+15 bonus points!)</span>';
                     this.showGameMessage();
                     this.flip7 = true;
@@ -173,7 +173,7 @@ export class flip7game{
                 const selectedPlayer = await this.selectPlayer(player, card);
                 const secondChancePlayer = this.players.find(p => p.name === selectedPlayer);
                 secondChancePlayer.drawAction(card);
-                this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${selectedPlayer}</span>`
+                this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 2px 2px red;">${selectedPlayer}</span>`
                     + ' is given ' + messageDict["Second Chance"] + '!';
                 this.showGameMessage();
                 await this.delay(1000);
@@ -185,7 +185,7 @@ export class flip7game{
             const frozenPlayer = this.players.find(p => p.name === selectedPlayer);
             this.deck.discardCards(frozenPlayer.discardHand());
             frozenPlayer.freeze();
-            this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${selectedPlayer}</span>`
+            this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 2px 2px red;">${selectedPlayer}</span>`
                 + ' is ' + messageDict["Frozen"] + '!';
             this.showGameMessage();
             await this.delay(1000);
@@ -194,7 +194,7 @@ export class flip7game{
             this.deck.discardCard(card);
             player.discardAction(card);
             const flip3Player = this.players.find(p => p.name === selectedPlayer);
-            this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${flip3Player.name}</span> `
+            this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 2px 2px red;">${flip3Player.name}</span> `
                 + messageDict["Flips Three"] + '!';
             this.showGameMessage();
             flip3Player.grid.classList.add("flip3-grid");
@@ -224,7 +224,7 @@ export class flip7game{
             const popup = document.getElementById("popup");
 
             if (action === "Second Chance"){
-                popup.innerHTML = `<span style ="color: yellow; font-size: 30px; text-shadow: 1px 1px red;">${player.name}</span><br><span style="color: white; font-size: 30px;">Select a player to give ${action} to</span><br>`;
+                popup.innerHTML = `<span style ="color: yellow; font-size: 30px; text-shadow: 1.5px 1.5px red;"><strong>${player.name}</strong></span><br><span style="color: white; font-size: 30px;">Select a player to give ${action} to</span><br>`;
                 this.players.forEach(p => {
                 if (p.status && !p.actions.includes("Second Chance")){
                     const playerBtn = document.createElement("button");
@@ -239,7 +239,7 @@ export class flip7game{
                 });
                 overlay.classList.add("active");
             } else {
-                popup.innerHTML = `<span style ="color: yellow; font-size: 30px; text-shadow: 1px 1px red;">${player.name}</span><br><span style="color: white; font-size: 30px;">Select a player to ${action}</span><br>`;
+                popup.innerHTML = `<span style ="color: yellow; font-size: 30px; text-shadow: 1.5px 1.5px red;"><strong>${player.name}</strong></span><br><span style="color: white; font-size: 30px;">Select a player to ${action}</span><br>`;
                 this.players.forEach(p => {
                     if (p.status){
                         const playerBtn = document.createElement("button");
@@ -281,7 +281,7 @@ export class flip7game{
                     this.stayBtn.classList.toggle("stayed");
                     this.deck.discardCards(currentPlayer.discardHand());
                     currentPlayer.stay();
-                    this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 1.5px 1.5px red;">${currentPlayer.name}</span>`
+                    this.message = `<span style="color: yellow; font-size: 50px; text-shadow: 2px 2px red;">${currentPlayer.name}</span>`
                         + ' stayed!';
                     this.showGameMessage();
                     await this.delay(500);

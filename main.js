@@ -24,7 +24,7 @@ function uniqueName(name) {
 
 async function enterNames(){
     for (let i = 0; i < playerNum; i ++){
-        prompt.innerHTML = `Enter Player ${i + 1}'s Name`;
+        prompt.innerHTML = `<strong>Enter Player ${i + 1}'s Name</strong>`;
         await waitForEnter();
         let playerName = uniqueName(input.value);
         if (playerName.length === 0) {
