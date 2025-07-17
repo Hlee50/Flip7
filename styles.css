@@ -328,6 +328,27 @@ button:hover {
     backface-visibility: hidden;
 }
 
+#flip-cover {
+    opacity: 1;
+    transition: opacity 0.25s ease;
+}
+
+#flip-cover.show {
+    opacity: 0;
+}
+
+#deck-counter {
+    color: white;
+    text-shadow: none;
+    font-size: 60px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+#deck-counter.show {
+    opacity: 1;
+}
+
 .flip-back {
     background-color: floralwhite;
     color: gray;

@@ -22,8 +22,11 @@ export class flip7game{
         });
         this.deck = new flip7deck();
         this.deck.shuffle();
+        this.deckCounter = document.getElementById("deck-counter");
+        this.deckCounter.innerHTML = this.deck.deck.length;
         this.flip7 = false;
         this.flipBtn = document.getElementById("flip");
+        this.flipCover = document.getElementById("flip-cover");
         this.flipBtnCard = document.getElementById("flip-card");
         this.stayBtn = document.getElementById("stay");
         this.message = "";
@@ -90,11 +93,9 @@ export class flip7game{
     async flip(player, flip3 = false, flip3Queue = []){
         if (this.deck.deck.length == 0) {
             this.deck.shuffle();
-            this.message = 'Deck shuffled!';
-            this.showGameMessage();
-            await this.delay(500);
         }
         const card = this.deck.deal();
+        this.deckCounter.innerHTML = this.deck.deck.length;
         console.log(card);
         this.flipBtn.classList.toggle("flipped");
         this.cardDisplay(card);
@@ -338,6 +339,8 @@ export class flip7game{
                         player.scoreDisplay.classList.add("show");
                         player.grid.querySelector(".player-display").classList.add("hide");
                     });
+                    this.flipCover.classList.add("show");
+                    this.deckCounter.classList.add("show");
                 }
             });
 
@@ -347,6 +350,8 @@ export class flip7game{
                         player.scoreDisplay.classList.remove("show");
                         player.grid.querySelector(".player-display").classList.remove("hide");   
                     });
+                    this.flipCover.classList.remove("show");
+                    this.deckCounter.classList.remove("show");
                 }
             });
 
