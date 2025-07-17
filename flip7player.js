@@ -98,7 +98,7 @@ export class flip7player{
     bust(){
         this.numbers = [];
         this.modifiers = [];
-        this.actions= [];
+        this.actions = [];
         this.status = false;
         this.roundScore = 0;
         this.grid.classList.remove("current-grid");
@@ -112,7 +112,7 @@ export class flip7player{
         this.sumTotalScore();
         this.numbers = [];
         this.modifiers = [];
-        this.actions= [];
+        this.actions = [];
         this.status = false;
         this.roundScore = 0;
         this.grid.classList.remove("current-grid");
@@ -126,7 +126,7 @@ export class flip7player{
         this.sumTotalScore();
         this.numbers = [];
         this.modifiers = [];
-        this.actions= [];
+        this.actions = [];
         this.status = false;
         this.roundScore = 0;
         this.grid.classList.remove("current-grid");
