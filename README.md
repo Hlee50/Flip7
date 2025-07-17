@@ -10,7 +10,7 @@ Similar to the physical card game, this digital version is local multiplayer onl
 ## Running/Playing the game:
 - https://hlee50.github.io/flip7/
 
-- Alternatively, you can run this locally by using `python3 -m http.server 8000` from the project directory and navigating to http://localhost:8000
+- Alternatively, you can run this locally by using the command `python3 -m http.server 8000` from the project directory and navigating to http://localhost:8000
 
 Select the number of players and enter each player's name.
 
@@ -18,10 +18,11 @@ During each player's turn (highlighted in green):
 - Click "Flip" or press the left arrow key to hit.  
 - Click "Stay" or press the right arrow key to stay.  
 
-Press tab to view scores for all players, or hover over one player to view that player's score.
+Press tab to view scores for all players and the number of cards left in the deck.
 
+You can also hover over one player to view that player's score.
 
-Action cards are represented as follows in-game:
+**Action cards are represented as follows in-game:**
 
 :heart: - Second Chance
 
