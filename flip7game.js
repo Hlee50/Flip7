@@ -77,7 +77,7 @@ export class flip7game{
     }
 
     cardMessage(card) {
-        var cardMessage = "";
+        let cardMessage = "";
         if (typeof card === "string") {
             if (card.startsWith('+') || card.startsWith('x')){
                 cardMessage = `<span style="color: red; font-size: 50px;">${card}</span>`;
